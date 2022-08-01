@@ -22,7 +22,7 @@
 
 ChangeFormer不同于以往的基于CNN的变化监测框架，使用Transformer模块替代CNN的Conv模块达到抽取特征的目的，同时，使用双流架构从前后时相的影像里抽取多尺度的可识别地域变化的特征，在网络最后使用MLP层进行解码获取影像所示区域的变化像素，并以二值图的形式显示。
 
-![IGARS_ChangeFormer-LEVIR_DSFIN](/Users/hu/Backup-Space/Work-Root-bkp/Algorithm-Competition/百度-复现赛-7/repo_template/IGARS_ChangeFormer-LEVIR_DSFIN.jpeg)
+![IGARS_ChangeFormer-LEVIR_DSFIN](./IGARS_ChangeFormer-LEVIR_DSFIN.jpeg)
 
 （效果图来自原文）
 
@@ -183,7 +183,7 @@ CUDA_VISIBLE_DEVICES=0 python main_cd.py --img_size ${img_size} --loss ${loss} -
 
 训练日志如下：
 
-![image-20220731232502857](/Users/hu/Backup-Space/Work-Root-bkp/Algorithm-Competition/百度-复现赛-7/repo_template/image-20220731232502857.png)
+![image-20220731232502857](./image-20220731232502857.png)
 
 全部日志在`checkpoints`路径下（需下载解压训练权重文件）。
 
@@ -225,7 +225,7 @@ CUDA_VISIBLE_DEVICES=0 python eval_cd.py --split ${split} --net_G ${net_G} --emb
 
 训练日志如下：
 
-![image-20220731232743370](/Users/hu/Backup-Space/Work-Root-bkp/Algorithm-Competition/百度-复现赛-7/repo_template/image-20220731232743370.png)
+![image-20220731232743370](./image-20220731232743370.png)
 
 全部日志在`checkpoints`路径下（需下载解压训练权重文件）。
 
@@ -237,7 +237,7 @@ CUDA_VISIBLE_DEVICES=0 python eval_cd.py --split ${split} --net_G ${net_G} --emb
 python demo_LEVIR.py
 ```
 
-![test_2_0000_0000](/Users/hu/Backup-Space/Work-Root-bkp/Algorithm-Competition/百度-复现赛-7/repo_template/test_2_0000_0000.png)
+![test_2_0000_0000](./test_2_0000_0000.png)
 
 (测试结果其一)
 
@@ -255,7 +255,7 @@ python demo_LEVIR.py
 
 - 前向：
 
-![image-20220731233632605](/Users/hu/Backup-Space/Work-Root-bkp/Algorithm-Competition/百度-复现赛-7/repo_template/image-20220731233632605.png)
+![image-20220731233632605](./image-20220731233632605.png)
 
 同一fake—data，torch和paddle模型输出差值，可认为0.
 
@@ -263,11 +263,11 @@ python demo_LEVIR.py
 
 加载同一模型权重（pytroch提供的预训练权重）：
 
-![image-20220731233827682](/Users/hu/Backup-Space/Work-Root-bkp/Algorithm-Competition/百度-复现赛-7/repo_template/image-20220731233827682.png)
+![image-20220731233827682](./image-20220731233827682.png)
 
 （paddle）
 
-![image-20220731234409109](/Users/hu/Backup-Space/Work-Root-bkp/Algorithm-Competition/百度-复现赛-7/repo_template/image-20220731234409109.png)
+![image-20220731234409109](./image-20220731234409109.png)
 
 （pytorch）
 
