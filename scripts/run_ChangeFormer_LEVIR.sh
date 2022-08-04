@@ -25,7 +25,7 @@ multi_scale_infer=False
 shuffle_AB=False
 
 #Initializing from pretrained weights
-pretrain=pretrained_changeformer/pretrained_changeformer.pdparam
+pretrain=pretrained_changeformer/pretrained_changeformer.pdparams
 
 #Train and Validation splits
 split=trainval         #trainval

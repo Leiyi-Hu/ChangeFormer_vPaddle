@@ -23,7 +23,7 @@ class CDEvaluator():
         self.pred_dir = args.output_folder
         os.makedirs(self.pred_dir, exist_ok=True)
 
-    def load_checkpoint(self, checkpoint_name='best_ckpt.pt'):
+    def load_checkpoint(self, checkpoint_name='best_ckpt.pdparams'):
 
         if os.path.exists(os.path.join(self.checkpoint_dir, checkpoint_name)):
             # load the entire checkpoint
