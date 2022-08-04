@@ -146,7 +146,7 @@ class CDTrainer():
         if os.path.exists(self.vis_dir) is False:
             os.mkdir(self.vis_dir)
 
-    def _load_checkpoint(self, ckpt_name='last_ckpt.pt'):
+    def _load_checkpoint(self, ckpt_name='last_ckpt.pdparams'):
         print("\n")
         if os.path.exists(os.path.join(self.checkpoint_dir, ckpt_name)):
             self.logger.write('loading last checkpoint...\n')
@@ -275,7 +275,7 @@ class CDTrainer():
     def _update_checkpoints(self):
 
         # save current model
-        self._save_checkpoint(ckpt_name='last_ckpt.pt')
+        self._save_checkpoint(ckpt_name='last_ckpt.pdparams')
         self.logger.write(
             'Lastest model updated. Epoch_acc=%.4f, Historical_best_acc=%.4f (at epoch %d)\n' %
             (self.epoch_acc, self.best_val_acc, self.best_epoch_id))
@@ -285,7 +285,7 @@ class CDTrainer():
         if self.epoch_acc > self.best_val_acc:
             self.best_val_acc = self.epoch_acc
             self.best_epoch_id = self.epoch_id
-            self._save_checkpoint(ckpt_name='best_ckpt.pt')
+            self._save_checkpoint(ckpt_name='best_ckpt.pdparams')
             self.logger.write('*' * 10 + 'Best model updated!\n')
             self.logger.write('\n')
 

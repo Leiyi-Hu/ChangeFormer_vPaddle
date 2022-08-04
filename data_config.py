@@ -24,6 +24,9 @@ class DataConfig:
             self.root_dir = './samples_LEVIR/'
         elif data_name == 'quick_start_DSIFN':
             self.root_dir = './samples_DSIFN/'
+        elif data_name == 'tipc_LEVIR':
+            self.root_dir = './test_tipc/data/mini_dataset/'
+            self.label_transform = "norm"
         else:
             raise TypeError('%s has not defined' % data_name)
         return self

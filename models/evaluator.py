@@ -51,8 +51,7 @@ class CDEvaluator():
         if os.path.exists(self.vis_dir) is False:
             os.mkdir(self.vis_dir)
 
-    def _load_checkpoint(self, checkpoint_name='best_ckpt.pt'):
-
+    def _load_checkpoint(self, checkpoint_name='best_ckpt.pdparams'):
         if os.path.exists(os.path.join(self.checkpoint_dir, checkpoint_name)):
             self.logger.write('loading last checkpoint...\n')
             # load the entire checkpoint
@@ -151,7 +150,7 @@ class CDEvaluator():
         img_in2 = batch['B']
         self.G_pred = self.net_G(img_in1, img_in2)[-1]
 
-    def eval_models(self, checkpoint_name='best_ckpt.pt'):
+    def eval_models(self, checkpoint_name='best_ckpt.pdparams'):
 
         self._load_checkpoint(checkpoint_name)
 
