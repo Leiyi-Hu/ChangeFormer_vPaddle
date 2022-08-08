@@ -31,7 +31,7 @@ if __name__ == '__main__':
     # args
     # ------------
     parser = ArgumentParser()
-    parser.add_argument('--gpu_ids', type=str, default='-1', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
+    parser.add_argument('--gpu_ids', type=str, default='0', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
     parser.add_argument('--project_name', default='ChangeFormer', type=str)
     parser.add_argument('--checkpoint_root', default='checkpoints', type=str)
     parser.add_argument('--vis_root', default='vis', type=str)
@@ -41,18 +41,18 @@ if __name__ == '__main__':
     parser.add_argument('--dataset', default='CDDataset', type=str)
     parser.add_argument('--data_name', default='LEVIR', type=str)
 
-    parser.add_argument('--batch_size', default=8, type=int)
-    parser.add_argument('--split', default="train", type=str)
-    parser.add_argument('--split_val', default="val", type=str)
+    parser.add_argument('--batch_size', default=16, type=int)
+    parser.add_argument('--split', default="trainval", type=str)
+    parser.add_argument('--split_val', default="test", type=str)
 
     parser.add_argument('--img_size', default=256, type=int)
     parser.add_argument('--shuffle_AB', default=False, type=str)
 
     # model
     parser.add_argument('--n_class', default=2, type=int)
-    parser.add_argument('--embed_dim', default=64, type=int)
+    parser.add_argument('--embed_dim', default=256, type=int)
     parser.add_argument('--pretrain', default=None, type=str)
-    parser.add_argument('--multi_scale_train', default=False, type=str)
+    parser.add_argument('--multi_scale_train', default=True, type=str)
     parser.add_argument('--multi_scale_infer', default=False, type=str)
     parser.add_argument('--multi_pred_weights', nargs='+', type=float, default=[0.5, 0.5, 0.5, 0.8, 1.0])
 
@@ -68,8 +68,8 @@ if __name__ == '__main__':
     parser.add_argument('--loss', default='ce', type=str)
 
     # optimizer
-    parser.add_argument('--optimizer', default='sgd', type=str)
-    parser.add_argument('--lr', default=0.01, type=float)
+    parser.add_argument('--optimizer', default='adamw', type=str)
+    parser.add_argument('--lr', default=0.0001, type=float)
     parser.add_argument('--max_epochs', default=1000, type=int)
     parser.add_argument('--lr_policy', default='linear', type=str,
                         help='linear | step')

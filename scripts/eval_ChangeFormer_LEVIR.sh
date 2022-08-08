@@ -9,7 +9,7 @@ split=test
 vis_root=./vis
 project_name=CD_ChangeFormerV6_LEVIR_b16_lr0.0001_adamw_trainval_test_200_linear_ce_multi_train_True_multi_infer_False_shuffle_AB_False_embed_dim_256
 checkpoints_root=./checkpoints
-checkpoint_name=best_ckpt.pdparam
+checkpoint_name=best_ckpt.pdparams
 img_size=256
 embed_dim=256 #Make sure to change the embedding dim (best and default = 256)
 
