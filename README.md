@@ -12,6 +12,9 @@
     - [4.1 模型训练]()
     - [4.2 模型评估]()
     - [4.3 模型预测]()
+    - [4.4 模型导出]()
+    - [4.5 静态图推理]()
+    - [4.6 TIPC基础链条测试]()
 - [5. LICENSE]()
 - [6. 参考链接与文献]()
 - [7. 对齐]()
@@ -70,13 +73,20 @@ repo用到的数据集是LEVIR数据集的采样，具体构建参见[ChangeForm
 
   `list`: 包含 `train.txt, val.txt and test.txt`, 文件存储了训练集、验证集和测试集的图像名。（注：在实际训练里，使用训练集+验证集进行训练，这也是根据[ChangeFormer](https://github.com/wgcban/ChangeFormer)放出的log确定的。）
 
+  ### 使用train+val训练的证据如下
+  - 如下图所示，论文原文中提到，将LEVIR-CD数据集不重叠地切割256*256，得到train/val/test的数量分别为7120/1024/2048。训练使用的batchsize为16
+  <img src=./paper.png></img>
+  - 根据ChangeFormer提供的[训练权重和log]()，如图所示，可以看到每个epoch的iterations数为509。只有train+val，才能满足8144/16=509，仅使用训练集7120/16=445，则和提供的log不一致
+  
+  <img src=./paperlog.png></img>
+
 
 
 复现情况（LEVIR数据集）：
 
 | 论文精度（F1） | 复现精度（F1） | 下载链接                                                     |
 | -------------- | -------------- | ------------------------------------------------------------ |
-| 90.40          | 90.347         | 链接: https://pan.baidu.com/s/156DgD9bXHBL2gWmbZtIEQQ 提取码: qj21 |
+| 90.40          | 90.347         | 链接: https://pan.baidu.com/s/1fFaitZO49_Zxm4mgXnwKaQ 提取码: eq1l |
 
 
 
@@ -116,11 +126,11 @@ AI-Studio都有安装，可直接使用。若自行配环境也可根据缺失�
   ChangeFormer模型的训练使用了ADE 160k进行预训练，并基于这一预训练权重进行在LEVIR数据集上的训练。
 
   - 这里提供原始pytorch权重下载地址：https://www.dropbox.com/s/undtrlxiz7bkag5/pretrained_changeformer.pt?dl=0。
-  - paddle格式权重下载地址：链接: https://pan.baidu.com/s/1AK_mO6Pkha83g2lm6z2WDg 提取码: 1mqc
+  - paddle格式权重下载地址：链接: https://pan.baidu.com/s/1LGLdj3Brc-e2MRu4iQ6t4w 提取码: acp8
   
 - 使用：
 
-  - 将其paddle权重下载后解压至项目根目录下。
+  - 将其paddle权重下载后解压至项目根目录下，若操作正常，解压后本项目中有`./pretrained_changeformer/pretrained_changeformer.pdparams`文件
 
 
 
@@ -168,7 +178,7 @@ multi_scale_infer=False
 shuffle_AB=False
 
 #Initializing from pretrained weights
-pretrain=../../data/data161387/pretrained_changeformer.pdparam # your path to pretrain model.
+pretrain=./pretrained_changeformer/pretrained_changeformer.pdparams # your path to pretrain model.
 
 #Train and Validation splits
 split=trainval         #trainval
@@ -215,7 +225,7 @@ split=test
 vis_root=./vis
 project_name=CD_ChangeFormerV6_LEVIR_b16_lr0.0001_adamw_trainval_test_200_linear_ce_multi_train_True_multi_infer_False_shuffle_AB_False_embed_dim_256_v0
 checkpoints_root=./checkpoints
-checkpoint_name=best_ckpt.pdparam
+checkpoint_name=best_ckpt.pdparams
 img_size=256
 embed_dim=256 #Make sure to change the embedding dim (best and default = 256)
 
@@ -240,6 +250,54 @@ python demo_LEVIR.py
 ![test_2_0000_0000](./test_2_0000_0000.png)
 
 (测试结果其一)
+
+
+
+
+### 4.4 模型导出
+执行以下命令将动态图导出为静态图
+```shell
+python export_model.py --model_path ${model_path}$  --save_inference_dir ./inference/
+```
+- 参数`model_path`为`.pdparams`后缀的权重的路径
+- 参数`save_inference_dir`为静态图的保存文件夹路径
+
+### 4.5 静态图推理
+执行以下命令使用导出的静态图进行推理
+```shell
+python infer.py --model_dir ./inference/ --img_dir ./samples_LEVIR/
+```
+- 参数`model_dir`为静态图保存的文件夹路径
+- 参数`img_dir`为待预测的图像文件夹路径，文件夹下需包含`A`和`B`两个子文件夹
+
+### 4.6 TIPC基础链条测试
+
+该部分依赖auto_log，需要进行安装，安装方式如下：
+
+auto_log的详细介绍参考[https://github.com/LDOUBLEV/AutoLog](https://github.com/LDOUBLEV/AutoLog)。
+
+```shell
+git clone https://github.com/LDOUBLEV/AutoLog
+cd ./AutoLog/
+pip3 install -r requirements.txt
+python3 setup.py bdist_wheel
+pip3 install ./dist/auto_log-1.2.0-py3-none-any.whl
+cd ..
+```
+
+- 运行命令，准备小批量数据
+```shell
+bash ./test_tipc/prepare.sh test_tipc/configs/ChangeFormer/train_infer_python.txt 'lite_train_lite_infer'
+```
+
+- 运行命令，小批量数据训练、导出、推理一体化
+```shell
+bash test_tipc/test_train_inference_python.sh test_tipc/configs/ChangeFormer/train_infer_python.txt 'lite_train_lite_infer'
+```
+#### TIPC测试结果（带时间戳）
+<img src=./TIPC1.png></img>
+<img src=./TIPC2.png></img>
+<img src=./TIPC3.png></img>
 
 ## 5. LICENSE
 
