@@ -73,6 +73,13 @@ repo用到的数据集是LEVIR数据集的采样，具体构建参见[ChangeForm
 
   `list`: 包含 `train.txt, val.txt and test.txt`, 文件存储了训练集、验证集和测试集的图像名。（注：在实际训练里，使用训练集+验证集进行训练，这也是根据[ChangeFormer](https://github.com/wgcban/ChangeFormer)放出的log确定的。）
 
+  ### 使用train+val训练的证据如下
+  - 如下图所示，论文原文中提到，将LEVIR-CD数据集不重叠地切割256*256，得到train/val/test的数量分别为7120/1024/2048。训练使用的batchsize为16
+  <img src=./paper.png></img>
+  - 根据ChangeFormer提供的[训练权重和log]()，如图所示，可以看到每个epoch的iterations数为509。只有train+val，才能满足8144/16=509，仅使用训练集7120/16=445，则和提供的log不一致
+  
+  <img src=./paperlog.png></img>
+
 
 
 复现情况（LEVIR数据集）：
